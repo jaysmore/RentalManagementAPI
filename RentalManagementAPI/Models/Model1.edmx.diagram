@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a7470333c0c24b0b8142812df4ac1112" Name="Diagram1">
+        <EntityTypeShape EntityType="RentalManagementModel.Equipment" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="RentalManagementModel.Invoice" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="RentalManagementModel.Job" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RentalManagementModel.Junction" Width="1.5" PointX="6" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="RentalManagementModel.Rental" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RentalManagementModel.Vendor" Width="1.5" PointX="0.75" PointY="14.625" IsExpanded="true" />
+        <AssociationConnector Association="RentalManagementModel.FK__Invoice__equipme__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="RentalManagementModel.FK__Junction__equipm__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="RentalManagementModel.FK__Invoice__jobID__2F10007B" ManuallyRouted="false" />
+        <AssociationConnector Association="RentalManagementModel.FK__Invoice__rentalI__300424B4" ManuallyRouted="false" />
+        <AssociationConnector Association="RentalManagementModel.FK__Invoice__vendorI__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="RentalManagementModel.FK__Junction__jobID__32E0915F" ManuallyRouted="false" />
+        <AssociationConnector Association="RentalManagementModel.FK__Junction__rental__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="RentalManagementModel.FK__Junction__vendor__35BCFE0A" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

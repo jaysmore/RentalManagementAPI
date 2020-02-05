@@ -1,0 +1,531 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RentalManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="equipmentID" />
+          </Key>
+          <Property Name="equipmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category" Type="varchar" MaxLength="255" />
+          <Property Name="make" Type="varchar" MaxLength="255" />
+          <Property Name="model" Type="varchar" MaxLength="255" />
+          <Property Name="serialNum" Type="int" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="invoiceID" />
+          </Key>
+          <Property Name="invoiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="invoiceNum" Type="int" />
+          <Property Name="jobID" Type="int" />
+          <Property Name="rentalID" Type="int" />
+          <Property Name="amount" Type="int" />
+          <Property Name="equipmentID" Type="int" />
+          <Property Name="vendorID" Type="int" />
+        </EntityType>
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="jobID" />
+          </Key>
+          <Property Name="jobID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fromDate" Type="date" />
+          <Property Name="untilDate" Type="date" />
+          <Property Name="PONum" Type="int" />
+          <Property Name="JobTitle" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Junction">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="jobID" Type="int" />
+          <Property Name="rentalID" Type="int" />
+          <Property Name="equipmentID" Type="int" />
+          <Property Name="vendorID" Type="int" />
+        </EntityType>
+        <EntityType Name="Rental">
+          <Key>
+            <PropertyRef Name="rentalID" />
+          </Key>
+          <Property Name="rentalID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="receiveDate" Type="date" />
+          <Property Name="receiveHr" Type="time" Precision="7" />
+          <Property Name="returnDate" Type="date" />
+          <Property Name="returnHr" Type="time" Precision="7" />
+          <Property Name="buyRent" Type="bit" Nullable="false" />
+          <Property Name="receiveDoc" Type="text" />
+          <Property Name="returnDoc" Type="text" />
+          <Property Name="rentalRate" Type="int" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="vendorID" />
+          </Key>
+          <Property Name="vendorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="salesPerson" Type="varchar" MaxLength="255" />
+          <Property Name="address" Type="varchar" MaxLength="255" />
+          <Property Name="contact" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK__Invoice__equipme__4AB81AF0">
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="0..1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="equipmentID" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="equipmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Invoice__jobID__2F10007B">
+          <End Role="Job" Type="Self.Job" Multiplicity="0..1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="jobID" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="jobID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Invoice__rentalI__300424B4">
+          <End Role="Rental" Type="Self.Rental" Multiplicity="0..1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rental">
+              <PropertyRef Name="rentalID" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="rentalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Invoice__vendorI__4BAC3F29">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="vendorID" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="vendorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Junction__equipm__34C8D9D1">
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="0..1" />
+          <End Role="Junction" Type="Self.Junction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="equipmentID" />
+            </Principal>
+            <Dependent Role="Junction">
+              <PropertyRef Name="equipmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Junction__jobID__32E0915F">
+          <End Role="Job" Type="Self.Job" Multiplicity="0..1" />
+          <End Role="Junction" Type="Self.Junction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="jobID" />
+            </Principal>
+            <Dependent Role="Junction">
+              <PropertyRef Name="jobID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Junction__rental__33D4B598">
+          <End Role="Rental" Type="Self.Rental" Multiplicity="0..1" />
+          <End Role="Junction" Type="Self.Junction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rental">
+              <PropertyRef Name="rentalID" />
+            </Principal>
+            <Dependent Role="Junction">
+              <PropertyRef Name="rentalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Junction__vendor__35BCFE0A">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+          <End Role="Junction" Type="Self.Junction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="vendorID" />
+            </Principal>
+            <Dependent Role="Junction">
+              <PropertyRef Name="vendorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RentalManagementModelStoreContainer">
+          <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Invoice" EntityType="Self.Invoice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Job" EntityType="Self.Job" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Junction" EntityType="Self.Junction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rental" EntityType="Self.Rental" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vendor" EntityType="Self.Vendor" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Invoice__equipme__4AB81AF0" Association="Self.FK__Invoice__equipme__4AB81AF0">
+            <End Role="Equipment" EntitySet="Equipment" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Invoice__jobID__2F10007B" Association="Self.FK__Invoice__jobID__2F10007B">
+            <End Role="Job" EntitySet="Job" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Invoice__rentalI__300424B4" Association="Self.FK__Invoice__rentalI__300424B4">
+            <End Role="Rental" EntitySet="Rental" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Invoice__vendorI__4BAC3F29" Association="Self.FK__Invoice__vendorI__4BAC3F29">
+            <End Role="Vendor" EntitySet="Vendor" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Junction__equipm__34C8D9D1" Association="Self.FK__Junction__equipm__34C8D9D1">
+            <End Role="Equipment" EntitySet="Equipment" />
+            <End Role="Junction" EntitySet="Junction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Junction__jobID__32E0915F" Association="Self.FK__Junction__jobID__32E0915F">
+            <End Role="Job" EntitySet="Job" />
+            <End Role="Junction" EntitySet="Junction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Junction__rental__33D4B598" Association="Self.FK__Junction__rental__33D4B598">
+            <End Role="Rental" EntitySet="Rental" />
+            <End Role="Junction" EntitySet="Junction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Junction__vendor__35BCFE0A" Association="Self.FK__Junction__vendor__35BCFE0A">
+            <End Role="Vendor" EntitySet="Vendor" />
+            <End Role="Junction" EntitySet="Junction" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RentalManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="equipmentID" />
+          </Key>
+          <Property Name="equipmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="make" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="serialNum" Type="Int32" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK__Invoice__equipme__4AB81AF0" FromRole="Equipment" ToRole="Invoice" />
+          <NavigationProperty Name="Junctions" Relationship="Self.FK__Junction__equipm__34C8D9D1" FromRole="Equipment" ToRole="Junction" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="invoiceID" />
+          </Key>
+          <Property Name="invoiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="invoiceNum" Type="Int32" />
+          <Property Name="jobID" Type="Int32" />
+          <Property Name="rentalID" Type="Int32" />
+          <Property Name="amount" Type="Int32" />
+          <Property Name="equipmentID" Type="Int32" />
+          <Property Name="vendorID" Type="Int32" />
+          <NavigationProperty Name="Equipment" Relationship="Self.FK__Invoice__equipme__4AB81AF0" FromRole="Invoice" ToRole="Equipment" />
+          <NavigationProperty Name="Job" Relationship="Self.FK__Invoice__jobID__2F10007B" FromRole="Invoice" ToRole="Job" />
+          <NavigationProperty Name="Rental" Relationship="Self.FK__Invoice__rentalI__300424B4" FromRole="Invoice" ToRole="Rental" />
+          <NavigationProperty Name="Vendor" Relationship="Self.FK__Invoice__vendorI__4BAC3F29" FromRole="Invoice" ToRole="Vendor" />
+        </EntityType>
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="jobID" />
+          </Key>
+          <Property Name="jobID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fromDate" Type="DateTime" Precision="0" />
+          <Property Name="untilDate" Type="DateTime" Precision="0" />
+          <Property Name="PONum" Type="Int32" />
+          <Property Name="JobTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK__Invoice__jobID__2F10007B" FromRole="Job" ToRole="Invoice" />
+          <NavigationProperty Name="Junctions" Relationship="Self.FK__Junction__jobID__32E0915F" FromRole="Job" ToRole="Junction" />
+        </EntityType>
+        <EntityType Name="Junction">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="jobID" Type="Int32" />
+          <Property Name="rentalID" Type="Int32" />
+          <Property Name="equipmentID" Type="Int32" />
+          <Property Name="vendorID" Type="Int32" />
+          <NavigationProperty Name="Equipment" Relationship="Self.FK__Junction__equipm__34C8D9D1" FromRole="Junction" ToRole="Equipment" />
+          <NavigationProperty Name="Job" Relationship="Self.FK__Junction__jobID__32E0915F" FromRole="Junction" ToRole="Job" />
+          <NavigationProperty Name="Rental" Relationship="Self.FK__Junction__rental__33D4B598" FromRole="Junction" ToRole="Rental" />
+          <NavigationProperty Name="Vendor" Relationship="Self.FK__Junction__vendor__35BCFE0A" FromRole="Junction" ToRole="Vendor" />
+        </EntityType>
+        <EntityType Name="Rental">
+          <Key>
+            <PropertyRef Name="rentalID" />
+          </Key>
+          <Property Name="rentalID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="receiveDate" Type="DateTime" Precision="0" />
+          <Property Name="receiveHr" Type="Time" Precision="7" />
+          <Property Name="returnDate" Type="DateTime" Precision="0" />
+          <Property Name="returnHr" Type="Time" Precision="7" />
+          <Property Name="buyRent" Type="Boolean" Nullable="false" />
+          <Property Name="receiveDoc" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="returnDoc" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="rentalRate" Type="Int32" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK__Invoice__rentalI__300424B4" FromRole="Rental" ToRole="Invoice" />
+          <NavigationProperty Name="Junctions" Relationship="Self.FK__Junction__rental__33D4B598" FromRole="Rental" ToRole="Junction" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="vendorID" />
+          </Key>
+          <Property Name="vendorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="salesPerson" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="contact" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK__Invoice__vendorI__4BAC3F29" FromRole="Vendor" ToRole="Invoice" />
+          <NavigationProperty Name="Junctions" Relationship="Self.FK__Junction__vendor__35BCFE0A" FromRole="Vendor" ToRole="Junction" />
+        </EntityType>
+        <Association Name="FK__Invoice__equipme__4AB81AF0">
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="0..1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="equipmentID" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="equipmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Junction__equipm__34C8D9D1">
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="0..1" />
+          <End Role="Junction" Type="Self.Junction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="equipmentID" />
+            </Principal>
+            <Dependent Role="Junction">
+              <PropertyRef Name="equipmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Invoice__jobID__2F10007B">
+          <End Role="Job" Type="Self.Job" Multiplicity="0..1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="jobID" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="jobID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Invoice__rentalI__300424B4">
+          <End Role="Rental" Type="Self.Rental" Multiplicity="0..1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rental">
+              <PropertyRef Name="rentalID" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="rentalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Invoice__vendorI__4BAC3F29">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="vendorID" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="vendorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Junction__jobID__32E0915F">
+          <End Role="Job" Type="Self.Job" Multiplicity="0..1" />
+          <End Role="Junction" Type="Self.Junction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="jobID" />
+            </Principal>
+            <Dependent Role="Junction">
+              <PropertyRef Name="jobID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Junction__rental__33D4B598">
+          <End Role="Rental" Type="Self.Rental" Multiplicity="0..1" />
+          <End Role="Junction" Type="Self.Junction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rental">
+              <PropertyRef Name="rentalID" />
+            </Principal>
+            <Dependent Role="Junction">
+              <PropertyRef Name="rentalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Junction__vendor__35BCFE0A">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+          <End Role="Junction" Type="Self.Junction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="vendorID" />
+            </Principal>
+            <Dependent Role="Junction">
+              <PropertyRef Name="vendorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RentalManagementEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Equipments" EntityType="Self.Equipment" />
+          <EntitySet Name="Invoices" EntityType="Self.Invoice" />
+          <EntitySet Name="Jobs" EntityType="Self.Job" />
+          <EntitySet Name="Junctions" EntityType="Self.Junction" />
+          <EntitySet Name="Rentals" EntityType="Self.Rental" />
+          <EntitySet Name="Vendors" EntityType="Self.Vendor" />
+          <AssociationSet Name="FK__Invoice__equipme__4AB81AF0" Association="Self.FK__Invoice__equipme__4AB81AF0">
+            <End Role="Equipment" EntitySet="Equipments" />
+            <End Role="Invoice" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Junction__equipm__34C8D9D1" Association="Self.FK__Junction__equipm__34C8D9D1">
+            <End Role="Equipment" EntitySet="Equipments" />
+            <End Role="Junction" EntitySet="Junctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Invoice__jobID__2F10007B" Association="Self.FK__Invoice__jobID__2F10007B">
+            <End Role="Job" EntitySet="Jobs" />
+            <End Role="Invoice" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Invoice__rentalI__300424B4" Association="Self.FK__Invoice__rentalI__300424B4">
+            <End Role="Rental" EntitySet="Rentals" />
+            <End Role="Invoice" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Invoice__vendorI__4BAC3F29" Association="Self.FK__Invoice__vendorI__4BAC3F29">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="Invoice" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Junction__jobID__32E0915F" Association="Self.FK__Junction__jobID__32E0915F">
+            <End Role="Job" EntitySet="Jobs" />
+            <End Role="Junction" EntitySet="Junctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Junction__rental__33D4B598" Association="Self.FK__Junction__rental__33D4B598">
+            <End Role="Rental" EntitySet="Rentals" />
+            <End Role="Junction" EntitySet="Junctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Junction__vendor__35BCFE0A" Association="Self.FK__Junction__vendor__35BCFE0A">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="Junction" EntitySet="Junctions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RentalManagementModelStoreContainer" CdmEntityContainer="RentalManagementEntities">
+          <EntitySetMapping Name="Equipments">
+            <EntityTypeMapping TypeName="RentalManagementModel.Equipment">
+              <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="equipmentID" ColumnName="equipmentID" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="make" ColumnName="make" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="serialNum" ColumnName="serialNum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoices">
+            <EntityTypeMapping TypeName="RentalManagementModel.Invoice">
+              <MappingFragment StoreEntitySet="Invoice">
+                <ScalarProperty Name="invoiceID" ColumnName="invoiceID" />
+                <ScalarProperty Name="invoiceNum" ColumnName="invoiceNum" />
+                <ScalarProperty Name="jobID" ColumnName="jobID" />
+                <ScalarProperty Name="rentalID" ColumnName="rentalID" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="equipmentID" ColumnName="equipmentID" />
+                <ScalarProperty Name="vendorID" ColumnName="vendorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Jobs">
+            <EntityTypeMapping TypeName="RentalManagementModel.Job">
+              <MappingFragment StoreEntitySet="Job">
+                <ScalarProperty Name="jobID" ColumnName="jobID" />
+                <ScalarProperty Name="fromDate" ColumnName="fromDate" />
+                <ScalarProperty Name="untilDate" ColumnName="untilDate" />
+                <ScalarProperty Name="PONum" ColumnName="PONum" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Junctions">
+            <EntityTypeMapping TypeName="RentalManagementModel.Junction">
+              <MappingFragment StoreEntitySet="Junction">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="jobID" ColumnName="jobID" />
+                <ScalarProperty Name="rentalID" ColumnName="rentalID" />
+                <ScalarProperty Name="equipmentID" ColumnName="equipmentID" />
+                <ScalarProperty Name="vendorID" ColumnName="vendorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rentals">
+            <EntityTypeMapping TypeName="RentalManagementModel.Rental">
+              <MappingFragment StoreEntitySet="Rental">
+                <ScalarProperty Name="rentalID" ColumnName="rentalID" />
+                <ScalarProperty Name="receiveDate" ColumnName="receiveDate" />
+                <ScalarProperty Name="receiveHr" ColumnName="receiveHr" />
+                <ScalarProperty Name="returnDate" ColumnName="returnDate" />
+                <ScalarProperty Name="returnHr" ColumnName="returnHr" />
+                <ScalarProperty Name="buyRent" ColumnName="buyRent" />
+                <ScalarProperty Name="receiveDoc" ColumnName="receiveDoc" />
+                <ScalarProperty Name="returnDoc" ColumnName="returnDoc" />
+                <ScalarProperty Name="rentalRate" ColumnName="rentalRate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendors">
+            <EntityTypeMapping TypeName="RentalManagementModel.Vendor">
+              <MappingFragment StoreEntitySet="Vendor">
+                <ScalarProperty Name="vendorID" ColumnName="vendorID" />
+                <ScalarProperty Name="salesPerson" ColumnName="salesPerson" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="contact" ColumnName="contact" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
